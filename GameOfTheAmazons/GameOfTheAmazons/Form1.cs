@@ -42,9 +42,10 @@ namespace GameOfTheAmazons
             this.boardSize = gameRules.getBoardSize();
             this.tileSize = 50;
 
-            this.whiteQueenIcon = new Bitmap(new Bitmap(@"C:\CSHARP\whiteQueen.png"), new Size(tileSize - 1, tileSize - 1));
-            this.blackQueenIcon = new Bitmap(new Bitmap(@"C:\CSHARP\blackQueen.png"), new Size(tileSize - 1, tileSize - 1));
-            this.arrowIcon = new Bitmap(new Bitmap(@"C:\CSHARP\Arrow.png"), new Size(tileSize - 1, tileSize - 1));
+            this.whiteQueenIcon = new Bitmap(new Bitmap(global::GameOfTheAmazons.Properties.Resources.whiteQueen), new Size(tileSize - 1, tileSize - 1));
+            this.blackQueenIcon = new Bitmap(new Bitmap(global::GameOfTheAmazons.Properties.Resources.blackQueen), new Size(tileSize - 1, tileSize - 1));
+            this.arrowIcon = new Bitmap(new Bitmap(global::GameOfTheAmazons.Properties.Resources.Arrow), new Size(tileSize - 1, tileSize - 1));
+
 
             //white starts
             this.currentPlayerTurn = 2;
