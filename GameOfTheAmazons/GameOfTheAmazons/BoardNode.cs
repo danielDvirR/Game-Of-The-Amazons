@@ -8,15 +8,21 @@ namespace GameOfTheAmazons
         private long board;
         private int blackQueenPlacementOnBoard;
         private int whiteQueenPlacementOnBoard;
-        private BoardNode nextSameLevel;
         private int evaluation;
+        private BoardNode next;
         BitBoardFuncs bitBoardTool;
+        /// <summary>
+        /// constructor method for a BoardNode, updates its properties and sets its next pointer to Null.
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="blackQueenPlacementOnBoard"></param>
+        /// <param name="whiteQueenPlacementOnBoard"></param>
         public BoardNode(long board, int blackQueenPlacementOnBoard, int whiteQueenPlacementOnBoard)
         {
             this.board = board;
             this.blackQueenPlacementOnBoard = blackQueenPlacementOnBoard;
             this.whiteQueenPlacementOnBoard = whiteQueenPlacementOnBoard;
-            this.nextSameLevel = null;
+            this.next = null;
             this.evaluation = 0;
             this.bitBoardTool = new BitBoardFuncs();
         }
@@ -45,13 +51,13 @@ namespace GameOfTheAmazons
         {
             this.whiteQueenPlacementOnBoard = whiteQueenPlacementOnBoard;
         }
-        public BoardNode getNextSameLevel()
+        public BoardNode getNext()
         {
-            return this.nextSameLevel;
+            return this.next;
         }
-        public void setNextSameLevel(BoardNode next)
+        public void setNext(BoardNode next)
         {
-            this.nextSameLevel = next;
+            this.next = next;
         }
         public int getEval()
         {
@@ -62,6 +68,9 @@ namespace GameOfTheAmazons
             this.evaluation = evaluation ;
         }
         #endregion getters and setters
+        /// <summary>
+        /// prints the bitBoard's properties
+        /// </summary>
         public void print()
         {
             Debug.WriteLine("-----------------------------");
@@ -71,14 +80,18 @@ namespace GameOfTheAmazons
             Debug.WriteLine(this.evaluation);
             Debug.WriteLine("-----------------------------");
         }
-        public void combine(BoardNode otherList)
+        /// <summary>
+        /// joins the otherList pointer that we get to this list
+        /// </summary>
+        /// <param name="otherList">pointer to another BoardNode</param>
+        public void combineLists(BoardNode otherList)
         {
             BoardNode tempSelf = this;
-            while (tempSelf.getNextSameLevel() != null)
+            while (tempSelf.getNext() != null)
             {
-                tempSelf = tempSelf.getNextSameLevel();
+                tempSelf = tempSelf.getNext();
             }
-            tempSelf.setNextSameLevel(otherList);
+            tempSelf.setNext(otherList);
         }
     }
 }

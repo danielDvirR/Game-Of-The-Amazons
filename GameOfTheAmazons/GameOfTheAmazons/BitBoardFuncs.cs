@@ -10,7 +10,7 @@ namespace GameOfTheAmazons
     internal class BitBoardFuncs
     {
         /// <summary>
-        /// constructor is empty, the class is used for its functions
+        /// constructor is empty, the class is used for containing usful functions on bit boards
         /// </summary>
         public BitBoardFuncs()
         {
@@ -18,12 +18,10 @@ namespace GameOfTheAmazons
         }
 
         /// <summary>
-        /// a getter function that gets the index of a queen
+        /// gets: a queen's number and a queenCoord list;
+        /// returns a coord of the specific queen
         /// </summary>
-        /// <param name="colorOfQueen">represents either black queen(1) or white
-        /// queen(2) </param>
         /// <param name="queenNum">is the number of queen (exmp: 1/2/3/4)</param>
-        /// <returns>an int containing the index of a queen</returns>
         public int getIndexOfColoredQueen(int queenNum, int queenPlacementOnBoardList)
         {
             switch (queenNum)
@@ -40,6 +38,11 @@ namespace GameOfTheAmazons
             }
             return -1;
         }
+        /// <summary>
+        /// gets: a queen's num,the new coord of the queen, and the old queenCoordList and updates the list with the new coord
+        /// </summary>
+        /// <param name="queenPlacementOnBoardList"></param>
+        /// <param name="queenNum">is the number of queen (exmp: 1/2/3/4)</param>
         public int setIndexOfColoredQueen(int queenNum, int newQueenCoord, int queenPlacementOnBoardList)
         {
 
@@ -80,9 +83,8 @@ namespace GameOfTheAmazons
         }
         /// <summary>
         /// function that gets a two dimentional array with the size 8x8 and 
-        /// converts the array to the bitBoard characteristic
+        /// converts the array to a bitBoard 
         /// </summary>
-        /// <param name="board"></param>
         public long arrayIntoBitBoard(int[,] board)
         {
             long gameBoard = 0;
@@ -99,6 +101,12 @@ namespace GameOfTheAmazons
             }
             return gameBoard;
         }
+        /// <summary>
+        /// gets a bitBoard and converts it into a two dimentional array, contaning zeros where zeros where 
+        /// and minus ones where there were ones on the bitBoard
+        /// </summary>
+        /// <param name="bitBoard"></param>
+        /// <returns></returns>
         public int[,] bitBoardIntoArray(long bitBoard)
         {
             int[,] newArray = {                 

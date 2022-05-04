@@ -99,8 +99,8 @@ namespace GameOfTheAmazons
             Label tellTurnLabel = new Label();
             tellTurnLabel.Name = "tellTurnLabel";
             tellTurnLabel.Location = new Point((boardSize + 1) * tileSize, tileSize);
-            tellTurnLabel.Size = new Size(tileSize * 2, 15);
-            tellTurnLabel.Text = "white' turn";
+            tellTurnLabel.Size = new Size(tileSize * 3, 15);
+            tellTurnLabel.Text = "Your turn";
             tellTurnLabel.BorderStyle = BorderStyle.FixedSingle;
             tellTurnLabel.BackColor = Color.LightGreen;
             this.Controls.Add(tellTurnLabel);
@@ -112,16 +112,15 @@ namespace GameOfTheAmazons
         /// switches the turn to the other player
         /// </summary>
         /// <returns>return's the index of the player whose turn it is</returns>
-        public int SwitchPlayer()
+        public void SwitchTo_AI_Turn()
         {
             Label tellTurnLabel = (Label)this.Controls.Find("tellTurnLabel", true)[0];
-            tellTurnLabel.BackColor = this.currentPlayerTurn == 1 ? Color.LightGreen : Color.IndianRed;
-            tellTurnLabel.Text = this.currentPlayerTurn == 1 ? "white's turn" : "black's turn";
-            this.stage = 0;
+            tellTurnLabel.BackColor = Color.LightBlue;
+            tellTurnLabel.Text = "black is calculating move";
+            tellTurnLabel.Refresh();
             int CoordsToChangeOnBoard = gameRules.AIMove();
-     
             updateBoard(CoordsToChangeOnBoard);
-            return 2;
+            this.stage = 0;
 
         }
 
@@ -185,7 +184,7 @@ namespace GameOfTheAmazons
             {
                 createArrow(pressedButton);
                 prevButton = pressedButton;
-                currentPlayerTurn = SwitchPlayer();
+                SwitchTo_AI_Turn();
                 CheckWonAddWhoWonLabel();
                 //bitBoardTool.printBitBoard(this.gameRules.getGameBoard());
             }
@@ -242,19 +241,25 @@ namespace GameOfTheAmazons
                 this.Controls.Add(whoWonLabel);
             }
         }
+        /// <summary>
+        /// function updates board by the coords it gets
+        /// </summary>
+        /// <param name="coordOfOldQueenNewQueenNewArrowTile">varable containing 3 coords of old queen, new queen and arrow tiles by order.
+        /// the coords are extracted and then used to update board</param>
         public void updateBoard(int coordOfOldQueenNewQueenNewArrowTile)
         {
             int coordOfOldQueenTile = coordOfOldQueenNewQueenNewArrowTile / 10000;
             int coordOfNewQueenTile = (coordOfOldQueenNewQueenNewArrowTile % 10000) / 100;
             int coordOfArrow = coordOfOldQueenNewQueenNewArrowTile % 100;
-            //Debug.WriteLine(coordOfOldQueenNewQueenNewArrowTile);
             Button oldQueenTile = (Button)this.Controls.Find(coordOfOldQueenTile.ToString(),true)[0];
             oldQueenTile.Image = null;
             Button newQueenTile = (Button)this.Controls.Find(coordOfNewQueenTile.ToString(), true)[0];
             newQueenTile.Image = this.blackQueenIcon;
             Button arrowTile = (Button)this.Controls.Find(coordOfArrow.ToString(), true)[0];
             arrowTile.Image = this.arrowIcon;
-           // bitBoardTool.printBitBoard(gameRules.getGameBoard());
+            Label tellTurnLabel = (Label)this.Controls.Find("tellTurnLabel", true)[0];
+            tellTurnLabel.BackColor = Color.LightGreen;
+            tellTurnLabel.Text = "Your turn";
 
         }
         private void Form1_Load(object sender, EventArgs e)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
 
 namespace GameOfTheAmazons
 {
@@ -59,6 +61,8 @@ namespace GameOfTheAmazons
             this.countMovesDone = 0;
             this.amountOfDepth = 1;
             this.bob = new AI();
+
+
         }
         #region getters and setters
         public int getBoardSize()
@@ -399,14 +403,19 @@ namespace GameOfTheAmazons
             return true;
         }
 
-
+        /// <summary>
+        /// checks what the best move is and returns a coord containing 3 coords of old queen, new queen and arrow tiles,
+        /// that represents the change of the best move that the AI does..
+        /// </summary>
         public int AIMove()
         {
-            BoardNode newGamePreset = bob.AlphaBeta(new BoardNode(this.gameBoard, this.blackQueenPlacementOnBoard, this.whiteQueenPlacementOnBoard),2/*this.amountOfDepth*/,true,-999999, 999999);
+            BoardNode newGamePreset;
+ 
+            newGamePreset = bob.AlphaBetaTerritory(new BoardNode(this.gameBoard, this.blackQueenPlacementOnBoard, this.whiteQueenPlacementOnBoard), this.amountOfDepth, true, -999999, 999999);
             int oldCoord = 0;
             int newCoord = 0;
             int arrowCoord;
-            newGamePreset.print();
+            //checks what queen was moved by comparing difference in their old and new coords
             for (int i = 1; i <= 4; i++)
             {
                 if (bitBoardTool.getIndexOfColoredQueen(i, this.blackQueenPlacementOnBoard) != bitBoardTool.getIndexOfColoredQueen(i, newGamePreset.getBlackQueenPlacementOnBoard()))
@@ -415,17 +424,18 @@ namespace GameOfTheAmazons
                     newCoord = bitBoardTool.getIndexOfColoredQueen(i, newGamePreset.getBlackQueenPlacementOnBoard());
                 }
             }
-
+            //we get the arrow coord by using xor on the bitBoard and the new and old queen coords 
             ulong arrowTileBeforeLog = (ulong)((this.gameBoard) ^ newGamePreset.getBoard() ^ (long)Math.Pow(2, newCoord) ^ (long)Math.Pow(2, oldCoord));
             arrowCoord = (int)Math.Log2((double)arrowTileBeforeLog);
+            //creating the int that contains all 3 coords
             int allCoords = oldCoord * (int)Math.Pow(10, 4) + newCoord * (int)Math.Pow(10, 2) + arrowCoord;
-            Debug.WriteLine("placements are: " + oldCoord * (int)Math.Pow(10, 4) + " " + newCoord * (int)Math.Pow(10, 2) + " " + arrowCoord);
-            Debug.WriteLine("evaluation of board is: " + bob.evaluateBoard(newGamePreset));
+            //updates the board properties
             this.gameBoard = newGamePreset.getBoard();
             this.blackQueenPlacementOnBoard = newGamePreset.getBlackQueenPlacementOnBoard();
             this.whiteQueenPlacementOnBoard = newGamePreset.getWhiteQueenPlacementOnBoard();
+            //increasing the depth of a search every 5 moves
             this.countMovesDone++;
-            if (this.countMovesDone % 6 == 0)
+            if (this.countMovesDone % 5 == 0)
                 this.amountOfDepth++;
             return allCoords;
         }
